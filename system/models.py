@@ -1,7 +1,7 @@
 from django.db import models
 
 class Keyword(models.Model):
-    word = models.CharField(max_length=50)
+    word = models.CharField(max_length=50, unique=True)
 
 class Post(models.Model):
     post_id = models.CharField(max_length=50, unique=True)
@@ -11,4 +11,5 @@ class Post(models.Model):
     positive = models.IntegerField()
     negative = models.IntegerField()
     neutral = models.IntegerField()
+    created_at = models.DateTimeField()
 
