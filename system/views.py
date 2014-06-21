@@ -32,7 +32,7 @@ def search(request):
     ]
 
     def scrape():
-        url = 'https://search-proxy.massrelevance.com/search.json?filter.text=search%20party%20movie&filter.start=-24h&filter.finish=0&view.entities=true&view.entities.limit=100'
+        url = 'https://search-proxy.massrelevance.com/search.json?filter.text=search%20party?filter.text=movie&filter.start=-24h&filter.finish=0&view.entities=true&view.entities.limit=100'
         r = requests.get(url)
         rJson = r.json()
         for tweet in rJson['views']['entities']['data']:

@@ -19,31 +19,7 @@
 
 <body>
 
-    <script type="text/javascript">
-        (function() {
-            var data = [
-    {
-        value: 20,
-        color:"#637b85"
-    },
-    {
-        value : 30,
-        color : "#2c9c69"
-    },
-    {
-        value : 40,
-        color : "#dbba34"
-    },
-    {
-        value : 10,
-        color : "#c62f29"
-    }
 
-    ];
-            var ctx = $('#myChart').getContext("2d");
-            var myNewChart = new Chart(ctx).Doughnut(data);
-        })();
-    </script>
 
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
@@ -239,6 +215,32 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <script src="{{STATIC_URL}}bootstrap/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+            (function() {
+                var data = [
+                {
+                    value: 20,
+                    color:"#637b85"
+                },
+                {
+                    value : 30,
+                    color : "#2c9c69"
+                },
+                {
+                    value : 40,
+                    color : "#dbba34"
+                },
+                {
+                    value : 10,
+                    color : "#c62f29"
+                }
+
+                ];
+                var ctx = $('#myChart').getContext("2d");
+                var myNewChart = new Chart(ctx).Doughnut(data);
+            })();
+    </script>
 
 
 </body>
