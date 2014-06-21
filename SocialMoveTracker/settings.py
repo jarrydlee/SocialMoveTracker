@@ -89,7 +89,7 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),
 )
 
-FIXTURE_DIRS = (
-    os.path.join(BASE_DIR,  'system/fixtures/'),
-)
+# FIXTURE_DIRS = (
+#     os.path.join(BASE_DIR,  'system/fixtures/'),
+# )
 
