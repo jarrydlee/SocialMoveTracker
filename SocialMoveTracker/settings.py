@@ -89,3 +89,10 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),
 )
 
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'nbcu.trending.alert@gmail.com'
+EMAIL_HOST_PASSWORD = 'HackathonIsFun1'
+
+

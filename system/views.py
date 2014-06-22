@@ -6,6 +6,8 @@ from system import AppProperties
 from system.AppProperties import MovieProperties
 from system.models import *
 from django.db import IntegrityError
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 import requests, urllib, time
 import json
 
@@ -19,6 +21,8 @@ def test(request):
     posts = Post.objects.all()
     print(len(posts))
     keywords = Keyword.objects.all()
+
+    checkTrending(800, 40, "The Terminator")
 
     return render(request, 'index.html', {
         'posts':posts,
@@ -121,6 +125,14 @@ def getLineChartData(request):
 
     return HttpResponse(json.dumps(res))
 
+def checkTrending(now, last, movie):
+    if (now - last) > 300:
+        message = "Hello, " + movie + " is now trending!"
+        subject = "" + movie + " is trending"
+
+        send_mail(subject, message, '',
+        ['richardfyadon@gmail.com'])
+
 
 def getSidebar(request):
     # Will return a dictionary with an entry for each movie, key is whether the number
@@ -143,6 +155,8 @@ def getSidebar(request):
         ).filter(
             created_at__lt = datetime.now()
         ).count()
+
+        checkTrending(numNow, numLast, movieTitle)
 
         if numLast < numNow:
             return 1
