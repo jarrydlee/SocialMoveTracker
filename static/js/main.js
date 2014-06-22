@@ -8,8 +8,7 @@ $(document).ready(function () {
 // Bind events
 var bindEvents = function () {
     getHourlyChartData();
-    getArrows()
-    getMovieTitles()
+    getSidebar();
 };
 
 var getHourlyChartData = function () {
@@ -100,27 +99,16 @@ var getHourlyChartData = function () {
     });
 }
 
-var getMovieTitles = function() {
+var getSidebar = function() {
     $.ajax({
-        url: 'api/get_titles',
+        url: 'api/get_sidebar',
         dataType: 'json',
         type: 'GET',
         success: function (data) {
-            console.log("getMovieTitle" + data);
-        }
-    });
-}
-
-var getArrows = function() {
-    $.ajax({
-        url: 'api/get_arrows',
-        dataType: 'json',
-        type: 'GET',
-        success: function (data) {
-            console.log("getArrows: " + data)
+            console.log("getSidebar: " + data)
             for (var key in data) {
                 if (data.hasOwnProperty(key)) {
-                    var movie = key.toLowerCase().replace(" ", "");
+                    var movie = key.toLowerCase().replace(/ /g, "").replace(/./g, "");
                     console.log(movie)
                     if (data[key] == 0) {
                         $('#' + movie).append('<span class=" text-success glyphicon glyphicon-circle-arrow-up pull-right"></span>')

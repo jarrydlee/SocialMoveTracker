@@ -127,10 +127,10 @@ def getLineChartData(movie):
     return res
 
 
-def getMovieArrow(request):
+def getSidebar(request):
     # Will return a dictionary with an entry for each movie, key is whether the number
     # of posts has increased or decreased
-    movieList = AppProperties.MovieProperties.getMovieList()
+    movieList = MovieProperties().getMovieList()
 
     def ArrowFunc(movieTitle):
         numLast = Post.objects.filter(
@@ -144,9 +144,9 @@ def getMovieArrow(request):
         numNow = Post.objects.filter(
             keyword__word = movieTitle
         ).filter(
-            created_at > (datetime.now() - timedelta(minutes=60))
+            created_at__gt=(datetime.now() - timedelta(minutes=60))
         ).filter(
-            created_at < datetime.now()
+            created_at__lt=datetime.now()
         ).count()
 
         if numLast < numNow:
@@ -160,9 +160,6 @@ def getMovieArrow(request):
 
     return HttpResponse(json.dumps(res))
 
-def getMovieTitles(request):
-    movieUtil = MovieProperties()
-    return HttpResponse(json.dumps(movieUtil.getMovieList()))
 
 
 

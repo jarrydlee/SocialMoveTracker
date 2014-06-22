@@ -9,8 +9,7 @@ urlpatterns = patterns('',
     url(r'^test$', 'system.views.test', name='test'),
     url(r'^search$', 'system.views.search', name='search'),
     url(r'^api/get_data$', 'system.views.getData', name='getData'),
-    url(r'^api/get_arrows$', 'system.views.getMovieArrow', name='getMovieArrow'),
-    url(r'^api/get_titles$', 'system.views.getMovieTitles', name='getMovieTitles'),
+    url(r'^api/get_sidebar$', 'system.views.getSidebar', name='getSidebar'),
 
 
     # url(r'^blog/', include('blog.urls')),
