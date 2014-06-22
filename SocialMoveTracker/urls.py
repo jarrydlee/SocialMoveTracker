@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     url(r'^search$', 'system.views.search', name='search'),
     url(r'^api/get_data$', 'system.views.getData', name='getData'),
     url(r'^api/get_sidebar$', 'system.views.getSidebar', name='getSidebar'),
+    url(r'^api/get_linechartdata$', 'system.views.getLineChartData', name='getLineChartData'),
 
 
     # url(r'^blog/', include('blog.urls')),

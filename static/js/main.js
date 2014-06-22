@@ -7,29 +7,35 @@ $(document).ready(function () {
 
 // Bind events
 var bindEvents = function () {
-    getHourlyChartData();
+    getLineChartData();
     getSidebar();
 };
 
-var getHourlyChartData = function () {
+var getLineChartData = function () {
     $.ajax({
-        url: 'api/get_data',
+        url: 'api/get_linechartdata',
         dataType: 'json',
         type: 'GET',
         success: function (data) {
-            var data = {
-                labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+            console.log(data);
+            var date = new Date();
+            var currentHour = date.getHours();
+            labels: [currentHour]
+            var chartData = {
+                labels: ['' + currentHour-6 + ':00', '' + currentHour-5 + ':00', '' + currentHour-4 + ':00', ''
+                            + currentHour-3 + ':00', '' + currentHour-2 + ':00', '' + currentHour-1 + ':00'
+                        ],
                 datasets: [
                     {
-                        fillColor: "rgba(99,123,133,0.4)",
-                        strokeColor: "rgba(220,220,220,1)",
+                        fillColor: "rgba(38,145,241,.4)",
+                        strokeColor: "rgba(42,66,86,1)",
                         pointColor: "rgba(220,220,220,1)",
                         pointStrokeColor: "#fff",
-                        data: [65, 54, 30, 81, 56, 55, 40]
+                        data: [data[6], data[5], data[4], data[3], data[2], data[1]]
                     },
                     {
                         fillColor: "rgba(219,186,52,0.4)",
-                        strokeColor: "rgba(220,220,220,1)",
+                        strokeColor: "rgba(246,59,87,1)",
                         pointColor: "rgba(220,220,220,1)",
                         pointStrokeColor: "#fff",
                         data: [20, 60, 42, 58, 31, 21, 50]
@@ -40,12 +46,12 @@ var getHourlyChartData = function () {
                 //Boolean - If we show the scale above the chart data
                 scaleOverlay: false,
                 //Boolean - If we want to override with a hard coded scale
-                scaleOverride: false,
+                scaleOverride: true,
                 //** Required if scaleOverride is true **
                 //Number - The number of steps in a hard coded scale
-                scaleSteps: null,
+                scaleSteps: 8,
                 //Number - The value jump in the hard coded scale
-                scaleStepWidth: null,
+                scaleStepWidth: 20,
                 //Number - The scale starting value
                 scaleStartValue: null,
                 //String - Colour of the scale line
@@ -71,7 +77,7 @@ var getHourlyChartData = function () {
                 //Number - Width of the grid lines
                 scaleGridLineWidth: 1,
                 //Boolean - Whether the line is curved between points
-                bezierCurve: true,
+                bezierCurve: false,
                 //Boolean - Whether to show a dot for each point
                 pointDot: true,
                 //Number - Radius of each point dot in pixels
@@ -81,9 +87,9 @@ var getHourlyChartData = function () {
                 //Boolean - Whether to show a stroke for datasets
                 datasetStroke: true,
                 //Number - Pixel width of dataset stroke
-                datasetStrokeWidth: 2,
+                datasetStrokeWidth: 4,
                 //Boolean - Whether to fill the dataset with a colour
-                datasetFill: true,
+                datasetFill: false,
                 //Boolean - Whether to animate the chart
                 animation: true,
                 //Number - Number of animation steps
@@ -94,7 +100,7 @@ var getHourlyChartData = function () {
                 onAnimationComplete: null
             };
             var ctx = $('#hourlyChart')[0].getContext("2d");
-            new Chart(ctx).Line(data, options);
+            new Chart(ctx).Line(chartData, options);
         }
     });
 };

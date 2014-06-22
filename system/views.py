@@ -18,12 +18,10 @@ def test(request):
     posts = Post.objects.all()
     print(len(posts))
     keywords = Keyword.objects.all()
-    lineChartData = getLineChartData('ALL')
 
     return render(request, 'index.html', {
         'posts':posts,
-        'keywords':keywords,
-        'lineChartData': lineChartData
+        'keywords':keywords
     })
 
 
@@ -105,7 +103,8 @@ def search(request):
 
     return render(request, 'index.html')
 
-def getLineChartData(movie):
+def getLineChartData(request):
+    movie = request.GET.get('m', 'ALL')
     movieList = [movie]
 
     def LineDataFunc(movieList, timeDelta):
@@ -114,7 +113,7 @@ def getLineChartData(movie):
         ).filter(
             created_at__gt=(datetime.now() - timeDelta)
         ).filter(
-            created_at__lt=datetime.now()
+            created_at__lt=(datetime.now() - timeDelta + timedelta(minutes=60))
         ).count()
 
     if movie == "ALL":
@@ -122,9 +121,9 @@ def getLineChartData(movie):
 
     res = dict()
     for x in range(1, 7):
-        res[str(x)] = LineDataFunc(movieList, timedelta(minutes=(60*x)))
+        res['' + str(x)] = LineDataFunc(movieList, timedelta(minutes=(60*x)))
 
-    return res
+    return HttpResponse(json.dumps(res))
 
 
 def getSidebar(request):
