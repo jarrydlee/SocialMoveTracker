@@ -173,5 +173,3 @@ def getDoughnutData(request):
         res[keyword[0].word] = post['total']
 
     return HttpResponse(json.dumps(res))
-
-
