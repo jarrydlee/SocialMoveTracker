@@ -8,78 +8,83 @@
     <meta name="author" content="">
     <title>Social Movie Tracker</title>
 
-    <link href="{{STATIC_URL}}bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="{{STATIC_URL}}js/dashboard.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}js/dashboard.css" rel="stylesheet">
 
-    <script src="{{STATIC_URL}}chart/js/Chart.min.js"></script>
+    <script src="{{ STATIC_URL }}chart/js/Chart.min.js"></script>
 
 </head>
 
 <body>
 
-    <div class="container-fluid">
-      <div class="row">
+<div class="container-fluid">
+    <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-          <ul id="movieSidebar" class="nav nav-sidebar">
-              <
-          </ul>
+            <a class="center-block" href="#" onClick="window.location.reload( true );">
+                <h3 style="color: white" class="text-center">Movies</h3>
+                <hr style="color: white">
+            </a>
+            <ul id="movieSidebar" class="nav nav-sidebar">
+                <
+            </ul>
 
         </div>
 
 
-
-
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="margin-top: 15px;">
             <row>
                 <p class="pull-right" style="padding-top: 20px;">NBCUniversal</p>
+
                 <h1 class="page-header">Dashboard</h1>
 
             </row>
 
 
-          <div class="row">
-            <div class="col-sm-4">
-                <div id="tweet-hour">
-                    <h2 class="text-center">Tweets By Hour</h2>
-                    <canvas id="hourlyChart" width="350" height="400"></canvas>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div id="tweet-hour">
+                        <h2 class="text-center">Tweets By Hour</h2>
+                        <canvas id="hourlyChart" width="350" height="400"></canvas>
+                    </div>
+                </div>
+
+                <div id="doughnutSpace" class="col-sm-4">
+                    <h2 class="text-center">Top Movies</h2>
+                    <canvas class="center-block" id="doughnutChart"></canvas>
+                </div>
+
+                <div id="sentiment-block" class="col-sm-4">
+                    <h2 class="text-center">Sentiment Analysis</h2>
+                    <canvas class="center-block" style="padding-top: 15px; " id="barGraph1" width="350"
+                            height="200"></canvas>
                 </div>
             </div>
 
-            <div id="doughnutSpace" class="col-sm-4">
-                <h2 class="text-center">Top Movies</h2>
-                <canvas class="center-block" id="doughnutChart" ></canvas>
+            <hr>
+
+            <h3 id="post-header" class="sub-header"></h3>
+
+            <div class="table-responsive">
+                <table id="post-feed" class="table table-hover">
+
+
+                </table>
             </div>
-
-            <div id="sentiment-block" class="col-sm-4">
-                <h2 class="text-center">Sentiment Analysis</h2>
-                <canvas class="center-block" style="padding-top: 15px; " id="barGraph1" width="350" height="200"></canvas>
-            </div>
-          </div>
-
-          <hr>
-
-          <h3 id="post-header" class="sub-header"></h3>
-          <div class="table-responsive">
-            <table id="post-feed" class="table table-hover">
-
-
-            </table>
-          </div>
         </div>
-      </div>
     </div>
+</div>
 
 
-    <tbody>
+<tbody>
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-    <script src="{{STATIC_URL}}bootstrap/js/bootstrap.min.js"></script>
-    <script src="{{STATIC_URL}}js/main.js"></script>
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
+<script src="{{ STATIC_URL }}js/main.js"></script>
 
 
 </body>

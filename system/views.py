@@ -22,7 +22,7 @@ def test(request):
     print(len(posts))
     keywords = Keyword.objects.all()
 
-    checkTrending(800, 40, "The Terminator")
+    checkTrending(800, 0, "Fast and Furious")
 
     return render(request, 'index.html', {
         'posts':posts,
@@ -127,7 +127,7 @@ def getLineChartData(request):
 
 def checkTrending(now, last, movie):
     if (now - last) > 300:
-        message = "Hello, " + movie + " is now trending!"
+        message = "Hello, " + movie + " is now trending! It has been mentioned " + str(now) + " in the past hour."
         subject = "" + movie + " is trending"
 
         send_mail(subject, message, '',

@@ -9,7 +9,6 @@ $(document).ready(function () {
 var bindEvents = function () {
     getDoughnutData();
     getSidebar();
-    getBarChartData();
     // Loads all posts at the start
     loadPosts();
 
@@ -108,7 +107,7 @@ var getLineChartData = function (movieName) {
                 //Number - Pixel width of dataset stroke
                 datasetStrokeWidth: 4,
                 //Boolean - Whether to fill the dataset with a colour
-                datasetFill: false,
+                datasetFill: true,
                 //Boolean - Whether to animate the chart
                 animation: true,
                 //Number - Number of animation steps
