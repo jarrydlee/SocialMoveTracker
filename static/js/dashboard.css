@@ -118,9 +118,8 @@ a {
     width: 500px;
 }
 
-#doughnutChart{
-    width: 400px !important;
-    height: 200px !important;
+#sentiment-block {
+    margin-left: -20px;
 }
 
 @media (max-width: 1500px) {
