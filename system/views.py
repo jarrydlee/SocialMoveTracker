@@ -157,11 +157,12 @@ def getSidebar(request):
 
 def getPosts(request):
     movie = request.GET.get('movie', '')
-    movie = urllib.unquote(movie)
+    if movie != '':
+        movie = urllib.unquote(movie)
+        moviePosts = [post.as_json() for post in Post.objects.filter(keyword__word=movie)]
+    else:
+        moviePosts = [post.as_json() for post in Post.objects.all()]
 
-    moviePosts = [post.as_json() for post in Post.objects.filter(keyword__word=movie)]
-    print(moviePosts)
-    print(json.dumps(moviePosts))
     return HttpResponse(json.dumps(moviePosts))
 
 def getDoughnutData(request):

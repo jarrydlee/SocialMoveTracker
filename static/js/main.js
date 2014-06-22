@@ -11,6 +11,8 @@ var bindEvents = function () {
     getDoughnutData();
     getSidebar();
     getBarChartData();
+    // Loads all posts at the start
+    loadPosts();
 
     $('#movieSidebar').on('click', '.movie-choice', loadPosts);
 
@@ -226,14 +228,16 @@ var populateDoughnutLabels = function(names, data) {
 var loadPosts = function () {
     // Get the movie name from data object
     movieName = getMovieName(this);
-    var encoded = encodeURIComponent(movieName);
+    console.log(movieName);
+    movieName=  movieName === undefined ? '' : '?movie='+encodeURIComponent(movieName);
+
     // Send request for posts
     $('#movieSidebar li').removeClass('active');
     $(this).parent().addClass('active');
 
-    $.get( 'api/get_posts?movie='+ encoded, function( data ) {
+    $.get( 'api/get_posts'+movieName, function( data ) {
         // Set new title
-        $('#post-header').text(movieName);
+        movieName === '' ? $('#post-header').text('All Tweets') : $('#post-header').text(movieName);
         // Clear table
         table = $('#post-feed');
         table.empty();
@@ -369,6 +373,5 @@ var getBarChartData = function () {
 }
 
 var getMovieName = function(element){
-    var title = $(element).attr('data-movie-title');
-    return title === undefined ? '' : title;
+    return $(element).attr('data-movie-title');
 };
