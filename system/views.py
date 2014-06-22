@@ -37,27 +37,28 @@ def search(request):
     def scrape(title):
         #define variables
         pagination = ''
-
-        # Creating keywords
-        keyword = Keyword(
-            word = title
-        )
-        try:
-            keyword.save()
-        except IntegrityError as e:
-            print('duplicate keyword')
+        #
+        # # Creating keywords
+        # keyword = Keyword(
+        #     word = title
+        # )
+        # try:
+        #     keyword.save()
+        # except IntegrityError as e:
+        #     print('duplicate keyword')
 
         for x in range(0,2):
             # Creating post object
-            url = 'https://search-proxy.massrelevance.com/search.json?filter.text="'+ urllib.quote(title).replace("%27", "'") +'"%20movie&filter.start=-24h&filter.finish=0&view.entities=true&view.entities.limit=100&'+ pagination
+            url = 'https://search-proxy.massrelevance.com/search.json?filter.text="'+ urllib.quote(title).replace("%27", "'") +'"%20movie&filter.start=-2h&filter.finish=0&view.entities=true&view.entities.limit=100&'+ pagination
             r = requests.get(url)
             rJson = r.json()
 
             for tweet in rJson['views']['entities']['data']:
+                print(tweet['raw']['text'])
 
                 # Disgusting way to not call processText on duplicates
                 if Post.objects.filter(text=tweet['raw']['text']).first() != None:
-                    print('Already in database')
+                    #print('Already in database')
                     continue
 
                 created = time.strftime('%Y-%m-%d %H:%M:%S', time.strptime(tweet['raw']['created_at'],'%a %b %d %H:%M:%S +0000 %Y'))
@@ -68,12 +69,13 @@ def search(request):
                 post = Post(
                     post_id = tweet['raw']['id'],
                     text = tweet['raw']['text'],
-                    keyword = keyword,
+                    keyword = Keyword.objects.get(word=title),
                     semantic = sentiment,
                     confidence = semantics['confidence'],
                     created_at = created,
                 )
                 try:
+                    #print("Success:")
                     post.save()
                 except IntegrityError as e:
                     #print('duplicate post')

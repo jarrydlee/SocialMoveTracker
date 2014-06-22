@@ -22,4 +22,9 @@ class Post(models.Model):
 
 
         )
+    def __str__(self):
+        try:
+            return str(self.post_id) + ' ' + str(self.text)
+        except Exception as e:
+            print("Exception thrown")
 

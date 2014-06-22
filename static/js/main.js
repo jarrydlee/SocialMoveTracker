@@ -247,7 +247,7 @@ var loadPosts = function () {
 
     $.get('api/get_posts' + movieName, function (data) {
         // Set new title
-        movieName === '' ? $('#post-header').text('All Tweets') : $('#post-header').text(originalMovieName);
+        movieName === '' ? $('#post-header').text('All Posts') : $('#post-header').text(originalMovieName);
         // Clear table
         table = $('#post-feed');
         table.empty();
