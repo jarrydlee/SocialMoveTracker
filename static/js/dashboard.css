@@ -108,3 +108,8 @@ a {
     color: black;
     background-color: white;
 }
+
+#hourlyChart {
+    width: 500px !important;
+    height: 300px !important;
+}
