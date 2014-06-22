@@ -1,7 +1,10 @@
+from datetime import *
+from django.http import HttpResponse
 from django.shortcuts import render
 from system.models import *
 from django.db import IntegrityError
 import requests, urllib, time
+import json
 
 # Create your views here.
 
@@ -11,7 +14,7 @@ def home(request):
     print(len(posts))
     keywords = Keyword.objects.all()
 
-    return render(request, 'test.html', {
+    return render(request, 'index.html', {
         'posts':posts,
         'keywords':keywords
     })
@@ -87,6 +90,40 @@ def search(request):
 
     return render(request, 'index.html')
 
+def getMovieArrow(request):
+    # # Will return a dictionary with an entry for each movie, key is whether the number
+    # # of posts has increased or decreased
+    # movieList = ["Ride Along", "Neighbors"]
+    #
+    # def ArrowFunc(movieTitle):
+    #     numLast = Post.objects.filter(
+    #         keyword=movieTitle
+    #     ).filter(
+    #         created_at > (datetime.now() - datetime.timedelta(minutes=120))
+    #     ).filter(
+    #         created_at < (datetime.now() - datetime.timedelta(minutes=60))
+    #     ).count()
+    #
+    #     numNow = Post.objects.filter(
+    #         keyword=movieTitle
+    #     ).filter(
+    #         created_at > (datetime.now() - datetime.timedelta(minutes=60))
+    #     ).filter(
+    #         created_at < datetime.now()
+    #     ).count()
+    #
+    #     if numLast < numNow:
+    #         return 1
+    #     elif numNow < numLast:
+    #         return -1
+    #     else:
+    #         return 0
+    #
+    # res = {movie: ArrowFunc(movie) for movie in movieList}
+
+    res = {"Ride Along": 1, "This Movie": -1}
+
+    return HttpResponse(json.dumps(res))
 
 
 

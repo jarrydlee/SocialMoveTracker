@@ -8,7 +8,7 @@ $(document).ready(function () {
 // Bind events
 var bindEvents = function () {
     getHourlyChartData();
-    getPostContext();
+    getArrows()
 };
 
 var getHourlyChartData = function () {
@@ -119,6 +119,29 @@ var getHourlyChartData = function () {
             };
             var ctx = $('#hourlyChart')[0].getContext("2d");
             new Chart(ctx).Line(data, options);
+        }
+    });
+}
+
+var getArrows = function() {
+    $.ajax({
+        url: '/get_arrows',
+        dataType: 'json',
+        type: 'GET',
+        success: function (data) {
+            for (var key in data) {
+                if (data.hasOwnProperty(key)) {
+                    var movie = key.toLowerCase().replace(" ", "");
+                    console.log(movie)
+                    if (data[key] == 0) {
+                        $('#' + movie).append('<span class=" text-success glyphicon glyphicon-circle-arrow-up pull-right"></span>')
+                    } else if (data[key] == 1) {
+                        $('#' + movie).append('<span class=" text-success glyphicon glyphicon-circle-arrow-up pull-right"></span>')
+                    } else {
+                        $('#' + movie).append('<span class=" text-danger glyphicon glyphicon-circle-arrow-down pull-right"></span>')
+                    }
+                }
+            }
         }
     });
 
