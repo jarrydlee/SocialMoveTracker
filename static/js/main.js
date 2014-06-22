@@ -106,7 +106,7 @@ var getMovieTitles = function() {
         dataType: 'json',
         type: 'GET',
         success: function (data) {
-            console.log(data);
+            console.log("getMovieTitle" + data);
         }
     });
 }
@@ -117,6 +117,7 @@ var getArrows = function() {
         dataType: 'json',
         type: 'GET',
         success: function (data) {
+            console.log("getArrows: " + data)
             for (var key in data) {
                 if (data.hasOwnProperty(key)) {
                     var movie = key.toLowerCase().replace(" ", "");

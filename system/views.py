@@ -110,11 +110,11 @@ def getLineChartData(movie):
 
     def LineDataFunc(movieList, timeDelta):
         return Post.objects.filter(
-            keyword__word in movieList
+            keyword__word__in=movieList
         ).filter(
-            created_at > (datetime.now() - timeDelta)
+            created_at__gt=(datetime.now() - timeDelta)
         ).filter(
-            created_at < datetime.now()
+            created_at__lt=datetime.now()
         ).count()
 
     if movie == "ALL":
@@ -136,9 +136,9 @@ def getMovieArrow(request):
         numLast = Post.objects.filter(
             keyword__word = movieTitle
         ).filter(
-            created_at > (datetime.now() - timedelta(minutes=120))
+            created_at__gt=(datetime.now() - timedelta(minutes=120))
         ).filter(
-            created_at < (datetime.now() - timedelta(minutes=60))
+            created_at__lt=(datetime.now() - timedelta(minutes=60))
         ).count()
 
         numNow = Post.objects.filter(
