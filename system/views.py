@@ -173,3 +173,30 @@ def getDoughnutData(request):
         res[keyword[0].word] = post['total']
 
     return HttpResponse(json.dumps(res))
+
+def getBarData(request):
+    movie = request.GET.get('movie', 'ALL')
+    movieList = [movie]
+
+    def BarDataFunc(movieList, flag):
+        sem = 2
+        if flag == 'negative':
+            sem = 0
+        elif flag == 'neutral':
+            sem = 1
+
+        return Post.objects.filter(
+            keyword__word__in=movieList
+        ).filter(
+            semantic=sem
+        ).count()
+
+    if movie == "ALL":
+        movieList = MovieProperties().getMovieList()
+
+    res = dict()
+    res['positive'] = BarDataFunc(movieList, 'positive')
+    res['negative'] = BarDataFunc(movieList, 'negative')
+    res['neutral'] = BarDataFunc(movieList, 'neutral')
+
+    return HttpResponse(json.dumps(res))

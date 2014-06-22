@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^api/get_linechartdata$', 'system.views.getLineChartData', name='getLineChartData'),
     url(r'^api/get_posts$', 'system.views.getPosts', name='getPosts'),
     url(r'^api/get_doughnutdata$', 'system.views.getDoughnutData', name='getDoughtnutData'),
+    url(r'^api/get_bardata$', 'system.views.getBarData', name='getBarData'),
 
     # url(r'^blog/', include('blog.urls')),
 

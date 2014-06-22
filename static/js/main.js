@@ -47,19 +47,21 @@ var getLineChartData = function (movieName) {
                     }
                 ]
             };
+            console.log(data);
             var max = data[1];
             for (var i = 2; i < 7; i++) {
                 if (data[i] > max) {
                     max = data[i];
                 }
             }
-            max = max + 15;
+            max = max + 10;
             var stepWidth;
             if(max < 8) {
                 stepWidth = 1;
             } else {
-                stepWidth = (max/8);
+                stepWidth = Math.floor(max/8);
             }
+            console.log(max);
             var options = {
                 //Boolean - If we show the scale above the chart data
                 scaleOverlay: false,
@@ -67,7 +69,7 @@ var getLineChartData = function (movieName) {
                 scaleOverride: true,
                 //** Required if scaleOverride is true **
                 //Number - The number of steps in a hard coded scale
-                scaleSteps: 8,
+                scaleSteps: 9,
                 //Number - The value jump in the hard coded scale
                 scaleStepWidth: stepWidth,
                 //Number - The scale starting value
@@ -118,6 +120,8 @@ var getLineChartData = function (movieName) {
                 onAnimationComplete: null
             };
             var ctx = $('#hourlyChart')[0].getContext("2d");
+            ctx.canvas.width = 500;
+            ctx.canvas.height = 300;
             new Chart(ctx).Line(chartData, options);
         }
     });
