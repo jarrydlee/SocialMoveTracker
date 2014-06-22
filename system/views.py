@@ -64,7 +64,6 @@ def search(request):
                 post = Post(
                     post_id = tweet['raw']['id'],
                     text = tweet['raw']['text'],
-                    label = '',
                     keyword = keyword,
                     semantic = sentiment,
                     confidence = semantics['confidence'],

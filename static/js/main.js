@@ -132,7 +132,7 @@ var getSidebar = function() {
             }
         }
     });
-}
+};
 
 var getDoughnutData = function () {
     $.ajax({
@@ -228,6 +228,8 @@ var loadPosts = function () {
     movieName = getMovieName(this);
     var encoded = encodeURIComponent(movieName);
     // Send request for posts
+    $('#movieSidebar li').removeClass('active');
+    $(this).parent().addClass('active');
 
     $.get( 'api/get_posts?movie='+ encoded, function( data ) {
         // Set new title
@@ -237,7 +239,6 @@ var loadPosts = function () {
         table.empty();
         // Repopulate posts
         table.append('<tr><th>Time</th><th>Tweet</th></tr>');
-        console.log(data);
         $.each(JSON.parse(data), function(idx, obj) {
             if (obj.semantic === 0) {
                 if (obj.confidence > 85) {

@@ -104,3 +104,8 @@ body {
 a {
   color: white;
 }
+
+.nav-sidebar > .active > a {
+    color: black;
+    background-color: white;
+}
