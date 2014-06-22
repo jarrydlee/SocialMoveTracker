@@ -28,21 +28,6 @@ def test(request):
 def search(request):
     baseUrl = 'https://search-proxy.massrelevance.com/search.json'
 
-    movies = [
-        'Ride%20Along',
-        'Endless%20Love',
-        'Non-Stop',
-        'Neighbors',
-        'A%20Million%20Ways%20to%20die%20in%20the%20west',
-        'Mrs%20Brown\'s%20Boys',
-        'The%20Purge',
-        'Get%20on%20up',
-        'Lucy',
-        'As%20above%20so%20below',
-        'the%20loft',
-        'search%20party',
-        'Ouija'
-    ]
 
     def scrape(title):
         #define variables
@@ -50,22 +35,25 @@ def search(request):
 
         # Creating keywords
         keyword = Keyword(
-            word = urllib.unquote_plus(title)
+            word = title
         )
         try:
             keyword.save()
         except IntegrityError as e:
             print('duplicate keyword')
 
-
         for x in range(0,2):
             # Creating post object
-            url = 'https://search-proxy.massrelevance.com/search.json?filter.text="'+ title +'"%20movie&filter.start=-24h&filter.finish=0&view.entities=true&view.entities.limit=100&'+ pagination
-            print(url)
+            url = 'https://search-proxy.massrelevance.com/search.json?filter.text="'+ urllib.quote(title).replace("%27", "'") +'"%20movie&filter.start=-24h&filter.finish=0&view.entities=true&view.entities.limit=100&'+ pagination
             r = requests.get(url)
             rJson = r.json()
 
             for tweet in rJson['views']['entities']['data']:
+
+                # Disgusting way to not call processText on duplicates
+                if Post.objects.filter(text=tweet['raw']['text']).first() != None:
+                    print('Already in database')
+                    continue
 
                 created = time.strftime('%Y-%m-%d %H:%M:%S', time.strptime(tweet['raw']['created_at'],'%a %b %d %H:%M:%S +0000 %Y'))
 
@@ -97,8 +85,16 @@ def search(request):
         result = json.loads(result.content)
         return result['result']
 
+    def getLatestPost(title):
+        newest = Post.objects.filter(keyword__word=title).first()
+        print(newest.created_at)
+        timeNow = time.strftime("%Y-%m-%d %H:%M:%S %z", time.gmtime())
+        print(timeNow)
+        delta = timeNow - newest.created_at
+        print(delta)
 
-    for title in movies:
+
+    for title in MovieProperties().getMovieList():
         scrape(title)
 
     return render(request, 'index.html')
