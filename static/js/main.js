@@ -50,6 +50,19 @@ var getLineChartData = function () {
                     }
                 ]
             };
+            var max = data[1];
+            for (var i = 2; i < 7; i++) {
+                if (data[i] > max) {
+                    max = data[i];
+                }
+            }
+            max = max + 15;
+            var stepWidth;
+            if(max < 8) {
+                stepWidth = 1;
+            } else {
+                stepWidth = (max/8);
+            }
             var options = {
                 //Boolean - If we show the scale above the chart data
                 scaleOverlay: false,
@@ -59,7 +72,7 @@ var getLineChartData = function () {
                 //Number - The number of steps in a hard coded scale
                 scaleSteps: 8,
                 //Number - The value jump in the hard coded scale
-                scaleStepWidth: 20,
+                scaleStepWidth: stepWidth,
                 //Number - The scale starting value
                 scaleStartValue: null,
                 //String - Colour of the scale line
@@ -387,21 +400,21 @@ var getBarChartData = function () {
 
 var getRadarGraph = function () {
     var data = {
-        labels: ["12", "1", "2", "3", "4", "5", "6"],
+        labels: ["12", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"],
         datasets: [
             {
-                fillColor: "rgba(220,220,220,0.5)",
+                fillColor: "rgba(151,187,205,0.5)",
                 strokeColor: "rgba(220,220,220,1)",
                 pointColor: "rgba(220,220,220,1)",
                 pointStrokeColor: "#fff",
-                data: [65, 59, 90, 81, 56, 55, 40]
+                data: [65, 59, 90, 81, 56, 55, 40, 65, 59, 90, 81, 56, 55,]
             },
             {
-                fillColor: "rgba(151,187,205,0.5)",
+                fillColor: "rgba(245,42,53,0.5)",
                 strokeColor: "rgba(151,187,205,1)",
                 pointColor: "rgba(151,187,205,1)",
                 pointStrokeColor: "#fff",
-                data: [28, 48, 40, 19, 96, 27, 100]
+                data: [28, 48, 40, 19, 96, 27, 100, 65, 59, 90, 81, 56, 55,]
             }
         ]
     }
