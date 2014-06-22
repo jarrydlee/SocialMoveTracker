@@ -1,4 +1,5 @@
 from datetime import *
+from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import render
 from system import AppProperties
@@ -155,6 +156,13 @@ def getSidebar(request):
 
     return HttpResponse(json.dumps(res))
 
+def getDoughnutData(request):
+    res = dict()
+    posts = Post.objects.all().values('keyword').annotate(total=Count('keyword')).order_by('-total')[:5]
+    for post in posts:
+        keyword = Keyword.objects.all().filter(id=post['keyword'])
+        res[keyword[0].word] = post['total']
 
+    return HttpResponse(json.dumps(res))
 
 

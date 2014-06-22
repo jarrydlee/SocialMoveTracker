@@ -1,13 +1,14 @@
 // Main function
 $(document).ready(function () {
 
-  bindEvents();
+    bindEvents();
 
 });
 
 // Bind events
 var bindEvents = function () {
     getLineChartData();
+    getDoughnutData();
     getSidebar();
 };
 
@@ -22,9 +23,9 @@ var getLineChartData = function () {
             var currentHour = date.getHours();
             labels: [currentHour]
             var chartData = {
-                labels: ['' + currentHour-6 + ':00', '' + currentHour-5 + ':00', '' + currentHour-4 + ':00', ''
-                            + currentHour-3 + ':00', '' + currentHour-2 + ':00', '' + currentHour-1 + ':00'
-                        ],
+                labels: ['' + currentHour - 6 + ':00', '' + currentHour - 5 + ':00', '' + currentHour - 4 + ':00', ''
+                    + currentHour - 3 + ':00', '' + currentHour - 2 + ':00', '' + currentHour - 1 + ':00'
+                ],
                 datasets: [
                     {
                         fillColor: "rgba(38,145,241,.4)",
@@ -105,35 +106,123 @@ var getLineChartData = function () {
     });
 };
 
-var getSidebar = function() {
+var getDoughnutData = function () {
     $.ajax({
-        url: 'api/get_sidebar',
+        url: 'api/get_doughnutdata',
         dataType: 'json',
         type: 'GET',
         success: function (data) {
-            console.log("getSidebar: " + data)
-            for (var key in data) {
-                if (data.hasOwnProperty(key)) {
-                    var movie = key.toLowerCase().replace(/ /g, "").replace(/./g, "");
-                    console.log(movie)
-                    if (data[key] == 0) {
-                        $('#movieSidebar').append('<li><a id=""+ movie +"" href="#">'+ key +'<span class=" text-success glyphicon glyphicon-circle-arrow-up pull-right"></span></a></li>')
-                    } else if (data[key] == 1) {
-                        $('#movieSidebar').append('<li><a id=""+ movie +"" href="#">'+ key +'<span class=" text-success glyphicon glyphicon-circle-arrow-up pull-right"></span></a></li>')
-                    } else {
-                        $('#movieSidebar').append('<li><a id=""+ movie +"" href="#">'+ key +'<span class=" text-danger glyphicon glyphicon-circle-arrow-down pull-right"></span></a></li>')
+
+            var names = []
+            for (key in data) {
+                names.push(key);
+            }
+            console.log(data);
+            var doughnutData = [
+                {
+                    value: data[names[0]],
+                    color: "#F7464A"
+                },
+                {
+                    value: data[names[1]],
+                    color: "#718D8A"
+                },
+                {
+                    value: data[names[3]],
+                    color: "#D4CCC5"
+                },
+                {
+                    value: data[names[2]],
+                    color: "#949FB1"
+                },
+                {
+                    value: data[names[4]],
+                    color: "#4D5360"
+                }
+            ]
+            var options = {
+                //Boolean - Whether we should show a stroke on each segment
+                segmentShowStroke: true,
+
+                //String - The colour of each segment stroke
+                segmentStrokeColor: "#fff",
+
+                //Number - The width of each segment stroke
+                segmentStrokeWidth: 2,
+
+                //The percentage of the chart that we cut out of the middle.
+                percentageInnerCutout: 50,
+
+                //Boolean - Whether we should animate the chart
+                animation: true,
+
+                //Number - Amount of animation steps
+                animationSteps: 100,
+
+                //String - Animation easing effect
+                animationEasing: "easeOutBounce",
+
+                //Boolean - Whether we animate the rotation of the Doughnut
+                animateRotate: true,
+
+                //Boolean - Whether we animate scaling the Doughnut from the centre
+                animateScale: false,
+
+                //Function - Will fire on animation completion.
+                onAnimationComplete: populateDoughnutLabels(names, data)
+            }
+            //Get context with jQuery - using jQuery's .get() method.
+            var ctx = $("#doughnutChart").get(0).getContext("2d");
+            //This will get the first returned node in the jQuery collection.
+            var myNewChart = new Chart(ctx).Doughnut(doughnutData, options);
+
+            var ctx = $("#doughnutChart2").get(0).getContext("2d");
+            //This will get the first returned node in the jQuery collection.
+            var myNewChart2 = new Chart(ctx).Doughnut(doughnutData, options);
+
+
+        }
+
+    });
+}
+
+var populateDoughnutLabels = function(names, data) {
+    $('#doughnutSpace').append('<p class="text-center" style="color: #F7464A; margin: 0 auto;">' + names[0] + ': ' + data[names[0]] + '</p>');
+    $('#doughnutSpace').append('<p class="text-center" style="color: #718D8A; margin: 0 auto;">' + names[1] + ': ' + data[names[1]] + '</p>');
+    $('#doughnutSpace').append('<p class="text-center" style="color: #9C9893; margin: 0 auto;">' + names[3] + ': ' + data[names[3]] + '</p>');
+    $('#doughnutSpace').append('<p class="text-center" style="color: #949FB1; margin: 0 auto;">' + names[2] + ': ' + data[names[2]] + '</p>');
+    $('#doughnutSpace').append('<p class="text-center" style="color: #4D5360; margin: 0 auto;">' + names[4] + ': ' + data[names[4]] + '</p>');
+}
+
+    var getSidebar = function () {
+        $.ajax({
+            url: 'api/get_sidebar',
+            dataType: 'json',
+            type: 'GET',
+            success: function (data) {
+                console.log("getSidebar: " + data)
+                for (var key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        var movie = key.toLowerCase().replace(/ /g, "").replace(/./g, "");
+                        console.log(movie)
+                        if (data[key] == 0) {
+                            $('#movieSidebar').append('<li><a id=""+ movie +"" href="#">' + key + '<span class=" text-success glyphicon glyphicon-circle-arrow-up pull-right"></span></a></li>')
+                        } else if (data[key] == 1) {
+                            $('#movieSidebar').append('<li><a id=""+ movie +"" href="#">' + key + '<span class=" text-success glyphicon glyphicon-circle-arrow-up pull-right"></span></a></li>')
+                        } else {
+                            $('#movieSidebar').append('<li><a id=""+ movie +"" href="#">' + key + '<span class=" text-danger glyphicon glyphicon-circle-arrow-down pull-right"></span></a></li>')
+                        }
                     }
                 }
             }
-        }
-    });
+        });
 
-};
+    };
 
-var processText = function (text) {
-    var baseUrl = 'http://sentiment.vivekn.com/api/text/';
+    var processText = function (text) {
+        var baseUrl = 'http://sentiment.vivekn.com/api/text/';
 
 
-};
+    };
 
 
