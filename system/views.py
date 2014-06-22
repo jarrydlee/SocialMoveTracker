@@ -1,6 +1,8 @@
 from datetime import *
 from django.http import HttpResponse
 from django.shortcuts import render
+from system import AppProperties
+from system.AppProperties import MovieProperties
 from system.models import *
 from django.db import IntegrityError
 import requests, urllib, time
@@ -16,10 +18,12 @@ def test(request):
     posts = Post.objects.all()
     print(len(posts))
     keywords = Keyword.objects.all()
+    lineChartData = getLineChartData('ALL')
 
     return render(request, 'index.html', {
         'posts':posts,
-        'keywords':keywords
+        'keywords':keywords,
+        'lineChartData': lineChartData
     })
 
 
@@ -101,40 +105,66 @@ def search(request):
 
     return render(request, 'index.html')
 
+def getLineChartData(movie):
+    movieList = [movie]
+
+    def LineDataFunc(movieList, timeDelta):
+        return Post.objects.filter(
+            keyword.word in movieList
+        ).filter(
+            created_at > (datetime.now() - timeDelta)
+        ).filter(
+            created_at < datetime.now()
+        ).count()
+
+    if movie == "ALL":
+        movieList = MovieProperties().getMovieList()
+
+    res = dict()
+    for x in range(1, 7):
+        res[str(x)] = LineDataFunc(movieList, timedelta(minutes=(60*x)))
+
+    return res
+
+
 def getMovieArrow(request):
-    # # Will return a dictionary with an entry for each movie, key is whether the number
-    # # of posts has increased or decreased
-    # movieList = ["Ride Along", "Neighbors"]
-    #
-    # def ArrowFunc(movieTitle):
-    #     numLast = Post.objects.filter(
-    #         keyword=movieTitle
-    #     ).filter(
-    #         created_at > (datetime.now() - datetime.timedelta(minutes=120))
-    #     ).filter(
-    #         created_at < (datetime.now() - datetime.timedelta(minutes=60))
-    #     ).count()
-    #
-    #     numNow = Post.objects.filter(
-    #         keyword=movieTitle
-    #     ).filter(
-    #         created_at > (datetime.now() - datetime.timedelta(minutes=60))
-    #     ).filter(
-    #         created_at < datetime.now()
-    #     ).count()
-    #
-    #     if numLast < numNow:
-    #         return 1
-    #     elif numNow < numLast:
-    #         return -1
-    #     else:
-    #         return 0
-    #
-    # res = {movie: ArrowFunc(movie) for movie in movieList}
+    # Will return a dictionary with an entry for each movie, key is whether the number
+    # of posts has increased or decreased
+    movieList = AppProperties.MovieProperties.getMovieList()
+
+    def ArrowFunc(movieTitle):
+        numLast = Post.objects.filter(
+            keyword.word = movieTitle
+        ).filter(
+            created_at > (datetime.now() - timedelta(minutes=120))
+        ).filter(
+            created_at < (datetime.now() - timedelta(minutes=60))
+        ).count()
+
+        numNow = Post.objects.filter(
+            keyword.word = movieTitle
+        ).filter(
+            created_at > (datetime.now() - timedelta(minutes=60))
+        ).filter(
+            created_at < datetime.now()
+        ).count()
+
+        if numLast < numNow:
+            return 1
+        elif numNow < numLast:
+            return -1
+        else:
+            return 0
+
+    res = {movie: ArrowFunc(movie) for movie in movieList}
 
     res = {"Ride Along": 1, "This Movie": -1}
 
     return HttpResponse(json.dumps(res))
+
+def getMovieTitles(request):
+    movieUtil = MovieProperties()
+    return HttpResponse(json.dumps(movieUtil.getMovieList()))
 
 
 
