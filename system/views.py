@@ -110,7 +110,7 @@ def getLineChartData(movie):
 
     def LineDataFunc(movieList, timeDelta):
         return Post.objects.filter(
-            keyword.word in movieList
+            keyword__word in movieList
         ).filter(
             created_at > (datetime.now() - timeDelta)
         ).filter(
@@ -134,7 +134,7 @@ def getMovieArrow(request):
 
     def ArrowFunc(movieTitle):
         numLast = Post.objects.filter(
-            keyword.word = movieTitle
+            keyword__word = movieTitle
         ).filter(
             created_at > (datetime.now() - timedelta(minutes=120))
         ).filter(
@@ -142,7 +142,7 @@ def getMovieArrow(request):
         ).count()
 
         numNow = Post.objects.filter(
-            keyword.word = movieTitle
+            keyword__word = movieTitle
         ).filter(
             created_at > (datetime.now() - timedelta(minutes=60))
         ).filter(
@@ -157,8 +157,6 @@ def getMovieArrow(request):
             return 0
 
     res = {movie: ArrowFunc(movie) for movie in movieList}
-
-    res = {"Ride Along": 1, "This Movie": -1}
 
     return HttpResponse(json.dumps(res))
 
