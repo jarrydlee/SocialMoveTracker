@@ -136,17 +136,17 @@ def getSidebar(request):
         numLast = Post.objects.filter(
             keyword__word = movieTitle
         ).filter(
-            created_at__gt=(datetime.now() - timedelta(minutes=120))
+            created_at__gt = (datetime.now() - timedelta(minutes=120))
         ).filter(
-            created_at__lt=(datetime.now() - timedelta(minutes=60))
+            created_at__lt = (datetime.now() - timedelta(minutes=60))
         ).count()
 
         numNow = Post.objects.filter(
             keyword__word = movieTitle
         ).filter(
-            created_at__gt=(datetime.now() - timedelta(minutes=60))
+            created_at__gt = (datetime.now() - timedelta(minutes=60))
         ).filter(
-            created_at__lt=datetime.now()
+            created_at__lt = datetime.now()
         ).count()
 
         if numLast < numNow:

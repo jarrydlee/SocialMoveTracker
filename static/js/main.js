@@ -35,7 +35,7 @@ var getHourlyChartData = function () {
                         data: [20, 60, 42, 58, 31, 21, 50]
                     },
                 ]
-            }
+            };
             var options = {
                 //Boolean - If we show the scale above the chart data
                 scaleOverlay: false,
@@ -97,7 +97,7 @@ var getHourlyChartData = function () {
             new Chart(ctx).Line(data, options);
         }
     });
-}
+};
 
 var getSidebar = function() {
     $.ajax({
@@ -111,11 +111,11 @@ var getSidebar = function() {
                     var movie = key.toLowerCase().replace(/ /g, "").replace(/./g, "");
                     console.log(movie)
                     if (data[key] == 0) {
-                        $('#' + movie).append('<span class=" text-success glyphicon glyphicon-circle-arrow-up pull-right"></span>')
+                        $('#movieSidebar').append('<li><a id=""+ movie +"" href="#">'+ key +'<span class=" text-success glyphicon glyphicon-circle-arrow-up pull-right"></span></a></li>')
                     } else if (data[key] == 1) {
-                        $('#' + movie).append('<span class=" text-success glyphicon glyphicon-circle-arrow-up pull-right"></span>')
+                        $('#movieSidebar').append('<li><a id=""+ movie +"" href="#">'+ key +'<span class=" text-success glyphicon glyphicon-circle-arrow-up pull-right"></span></a></li>')
                     } else {
-                        $('#' + movie).append('<span class=" text-danger glyphicon glyphicon-circle-arrow-down pull-right"></span>')
+                        $('#movieSidebar').append('<li><a id=""+ movie +"" href="#">'+ key +'<span class=" text-danger glyphicon glyphicon-circle-arrow-down pull-right"></span></a></li>')
                     }
                 }
             }

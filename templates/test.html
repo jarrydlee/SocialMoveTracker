@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-sm-6">
                 {% for post in posts %}
-                    {{ post.text }} - {{ post.created_at }}<br><br>
+                    {{ post.text }} - {{ post.semantic }} -- {{ post.confidence }}<br><br>
                 {% endfor %}
             </div>
             <div class="col-sm-6">
