@@ -257,7 +257,7 @@ var loadPosts = function () {
         $.each(JSON.parse(data), function (idx, obj) {
             if (obj.semantic === 0) {
                 if (obj.confidence > 85) {
-                    table.append('<tr class="danger"><td style="width: 20%;">' + obj.time + '</td><td>' + obj.text + '</td><td>' + obj.confidence + '</td></tr></tbody>')
+                    table.append('<tr class="danger"><td style="width: 20%;">   ' + obj.time + '</td><td>' + obj.text + '</td><td>' + obj.confidence + '</td></tr></tbody>')
                 } else {
                     table.append('<tr><td style="width: 20%;">' + obj.time + '</td><td>' + obj.text + '</td><td>' + obj.confidence + '</td></tr></tbody>')
                 }
