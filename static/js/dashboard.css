@@ -117,3 +117,15 @@ a {
     display: block;
     width: 500px;
 }
+
+#doughnutChart{
+    width: 400px !important;
+    height: 200px !important;
+}
+
+@media (max-width: 1500px) {
+    #doughnutChart{
+    width: 350px !important;
+    height: 150px !important;
+}
+}
