@@ -100,7 +100,7 @@ def search(request):
     return render(request, 'index.html')
 
 def getLineChartData(request):
-    movie = request.GET.get('m', 'ALL')
+    movie = request.GET.get('movie', 'ALL')
     movieList = [movie]
 
     def LineDataFunc(movieList, timeDelta):
@@ -159,9 +159,9 @@ def getPosts(request):
     movie = request.GET.get('movie', '')
     if movie != '':
         movie = urllib.unquote(movie)
-        moviePosts = [post.as_json() for post in Post.objects.filter(keyword__word=movie)]
+        moviePosts = [post.as_json() for post in Post.objects.order_by('-created_at').filter(keyword__word=movie)]
     else:
-        moviePosts = [post.as_json() for post in Post.objects.all()]
+        moviePosts = [post.as_json() for post in Post.objects.order_by('-created_at')]
 
     return HttpResponse(json.dumps(moviePosts))
 

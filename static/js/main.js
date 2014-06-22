@@ -19,13 +19,18 @@ var bindEvents = function () {
 
 };
 
-var getLineChartData = function () {
+var getLineChartData = function (movieName) {
+    if (movieName === undefined) {
+        movieName = '';
+    }else {
+        movieName = '?movie=' + encodeURIComponent(movieName);
+    }
+    console.log(movieName);
     $.ajax({
-        url: 'api/get_linechartdata',
+        url: 'api/get_linechartdata'+ movieName,
         dataType: 'json',
         type: 'GET',
         success: function (data) {
-            console.log(data);
             var date = new Date();
             var currentHour = date.getHours();
             labels: [currentHour];
@@ -40,13 +45,6 @@ var getLineChartData = function () {
                         pointColor: "rgba(220,220,220,1)",
                         pointStrokeColor: "#fff",
                         data: [data[6], data[5], data[4], data[3], data[2], data[1]]
-                    },
-                    {
-                        fillColor: "rgba(219,186,52,0.4)",
-                        strokeColor: "rgba(246,59,87,1)",
-                        pointColor: "rgba(220,220,220,1)",
-                        pointStrokeColor: "#fff",
-                        data: [20, 60, 42, 58, 31, 21, 50]
                     }
                 ]
             };
@@ -136,11 +134,10 @@ var getSidebar = function() {
             for (var key in data) {
                 if (data.hasOwnProperty(key)) {
                     var movie = key.toLowerCase().replace(/ /g, "");
-                    console.log(movie);
                     if (data[key] === 0) {
                         $('#movieSidebar').append('<li><a class="movie-choice"  id="' + movie + '" data-movie-title="' + key + '" href="#">' + key + '<span class=" text-success glyphicon glyphicon-circle-arrow-up pull-right"></span></a></li>')
                     } else if (data[key] === 1) {
-                        $('#movieSidebar').append('<li ><a class="movie-choice" id="' + movie + '" data-movie-title="' + key + '" href="#">' + key + '<span class=" text-success glyphicon glyphicon-circle-arrow-up pull-right"></span></a></li>')
+                        $('#movieSidebar').append('<li ><a class="movie-choice" id="' + movie + '" data-movie-title="' + key + '" href="#">' + key + '<span class=" text-success glyphicon glyphicon-circle-arrow-right pull-right"></span></a></li>')
                     } else {
                         $('#movieSidebar').append('<li><a class="movie-choice" id="' + movie + '" data-movie-title="' + key + '" href="#">' + key + '<span class=" text-danger glyphicon glyphicon-circle-arrow-down pull-right"></span></a></li>')
                     }
@@ -236,17 +233,19 @@ var populateDoughnutLabels = function(names, data) {
 
 var loadPosts = function () {
     // Get the movie name from data object
-    movieName = getMovieName(this);
-    console.log(movieName);
-    movieName=  movieName === undefined ? '' : '?movie='+encodeURIComponent(movieName);
+    originalMovieName = getMovieName(this);
+    movieName=  originalMovieName === undefined ? '' : '?movie='+encodeURIComponent(originalMovieName);
 
     // Send request for posts
     $('#movieSidebar li').removeClass('active');
     $(this).parent().addClass('active');
 
+    // Update graphs
+    getLineChartData(originalMovieName);
+
     $.get( 'api/get_posts'+movieName, function( data ) {
         // Set new title
-        movieName === '' ? $('#post-header').text('All Tweets') : $('#post-header').text(movieName);
+        movieName === '' ? $('#post-header').text('All Tweets') : $('#post-header').text(originalMovieName);
         // Clear table
         table = $('#post-feed');
         table.empty();
