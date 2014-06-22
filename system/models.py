@@ -8,8 +8,7 @@ class Post(models.Model):
     text = models.CharField(max_length=250, unique=True)
     keyword = models.ForeignKey('Keyword')
     label = models.CharField(max_length=5)
-    positive = models.IntegerField()
-    negative = models.IntegerField()
-    neutral = models.IntegerField()
+    semantic = models.IntegerField()
+    confidence = models.FloatField()
     created_at = models.DateTimeField()
 

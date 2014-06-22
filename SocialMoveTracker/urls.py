@@ -5,7 +5,8 @@ from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^$', 'system.views.home', name='test'),
+    url(r'^$', 'system.views.home', name='home'),
+    url(r'^test$', 'system.views.test', name='test'),
     url(r'^search$', 'system.views.search', name='search'),
     url(r'^get_data$', 'system.views.getData', name='getData'),
     url(r'^get_arrows$', 'system.views.getMovieArrow', name='getMovieArrow'),

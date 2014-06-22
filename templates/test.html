@@ -1,0 +1,18 @@
+{% extends 'master.html' %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                {% for post in posts %}
+                    {{ post.text }} - {{ post.created_at }}<br><br>
+                {% endfor %}
+            </div>
+            <div class="col-sm-6">
+                {% for key in keywords %}
+                    {{ key.word }}<br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

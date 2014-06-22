@@ -145,6 +145,12 @@ var getArrows = function() {
         }
     });
 
-}
+};
+
+var processText = function (text) {
+    var baseUrl = 'http://sentiment.vivekn.com/api/text/';
+
+
+};
 
 

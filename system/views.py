@@ -8,8 +8,11 @@ import json
 
 # Create your views here.
 
-
 def home(request):
+
+    return render(request, 'index.html')
+
+def test(request):
     posts = Post.objects.all()
     print(len(posts))
     keywords = Keyword.objects.all()
@@ -52,6 +55,7 @@ def search(request):
         except IntegrityError as e:
             print('duplicate keyword')
 
+
         for x in range(0,2):
             # Creating post object
             url = 'https://search-proxy.massrelevance.com/search.json?filter.text="'+ title +'"%20movie&filter.start=-24h&filter.finish=0&view.entities=true&view.entities.limit=100&'+ pagination
@@ -63,15 +67,16 @@ def search(request):
 
                 created = time.strftime('%Y-%m-%d %H:%M:%S', time.strptime(tweet['raw']['created_at'],'%a %b %d %H:%M:%S +0000 %Y'))
 
+                semantics = processText(tweet['raw']['text'])
+                sentiment = 0 if semantics['sentiment'] == 'Negative' else 1 if semantics['sentiment'] == 'Neutral' else 2
 
                 post = Post(
                     post_id = tweet['raw']['id'],
                     text = tweet['raw']['text'],
                     label = '',
                     keyword = keyword,
-                    positive = 0,
-                    negative = 0,
-                    neutral = 0,
+                    semantic = sentiment,
+                    confidence = semantics['confidence'],
                     created_at = created,
                 )
                 try:
@@ -80,12 +85,18 @@ def search(request):
                     #print('duplicate post')
                     pass
 
-            pagination_text = urllib.quote_plus(rJson['views']['entities']['meta']['pagination']['next_cursor'])
+            paginationText = urllib.quote_plus(rJson['views']['entities']['meta']['pagination']['next_cursor'])
 
-            pagination = 'view.entities.cursor='+ pagination_text
+            pagination = 'view.entities.cursor='+ paginationText
+
+    def processText(text):
+        data = {'txt':text}
+        result = requests.post('http://sentiment.vivekn.com/api/text/', data=data)
+        result = json.loads(result.content)
+        return result['result']
+
 
     for title in movies:
-
         scrape(title)
 
     return render(request, 'index.html')
