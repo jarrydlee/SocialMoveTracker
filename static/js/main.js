@@ -238,26 +238,24 @@ var loadPosts = function () {
         table = $('#post-feed');
         table.empty();
         // Repopulate posts
-        table.append('<tr><th>Time</th><th>Tweet</th></tr>');
+        table.append('<tr><th>Time</th><th>Tweet</th><th>Confidence</th></tr>');
         $.each(JSON.parse(data), function(idx, obj) {
             if (obj.semantic === 0) {
                 if (obj.confidence > 85) {
-                    table.append('<tr class="danger"><td style="width: 20%;">' + obj.time + '</td><td>' + obj.text + '</td></tr></tbody>')
+                    table.append('<tr class="danger"><td style="width: 20%;">' + obj.time + '</td><td>' + obj.text + '</td><td>' + obj.confidence + '</td></tr></tbody>')
                 } else {
-                    table.append('<tr><td style="width: 20%;">' + obj.time + '</td><td>' + obj.text + '</td></tr></tbody>')
+                    table.append('<tr><td style="width: 20%;">' + obj.time + '</td><td>' + obj.text + '</td><td>' + obj.confidence + '</td></tr></tbody>')
                 }
 
             } else if (obj.semantic === 1) {
-                if (obj.confidence > 85) {
-                    table.append('<tr class="warning"><td style="width: 20%;">' + obj.time + '</td><td>' + obj.text + '</td></tr></tbody>')
-                } else {
-                    table.append('<tr><td style="width: 20%;">' + obj.time + '</td><td>' + obj.text + '</td></tr></tbody>')
-                }
+
+                table.append('<tr><td style="width: 20%;">' + obj.time + '</td><td>' + obj.text + '</td><td>' + obj.confidence + '</td></tr></tbody>')
+
             } else {
                 if (obj.confidence > 85) {
-                    table.append('<tr class="success"><td style="width: 20%;">' + obj.time + '</td><td>' + obj.text + '</td></tr></tbody>')
+                    table.append('<tr class="success"><td style="width: 20%;">' + obj.time + '</td><td>' + obj.text + '</td><td>' + obj.confidence + '</td></tr></tbody>')
                 } else {
-                    table.append('<tr><td style="width: 20%;">' + obj.time + '</td><td>' + obj.text + '</td></tr></tbody>')
+                    table.append('<tr><td style="width: 20%;">' + obj.time + '</td><td>' + obj.text + '</td><td>' + obj.confidence + '</td></tr></tbody>')
                 }
             }
         });
