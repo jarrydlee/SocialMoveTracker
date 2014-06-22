@@ -7,7 +7,6 @@ $(document).ready(function () {
 
 // Bind events
 var bindEvents = function () {
-    getLineChartData();
     getDoughnutData();
     getSidebar();
     getBarChartData();
@@ -118,6 +117,7 @@ var getLineChartData = function (movieName) {
                 //Function - Fires when the animation is complete
                 onAnimationComplete: null
             };
+            $('#tweet-hour').append('<canvas id="hourlyChart" width="500" height="300"></canvas>');
             var ctx = $('#hourlyChart')[0].getContext("2d");
             new Chart(ctx).Line(chartData, options);
         }
