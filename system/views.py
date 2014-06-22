@@ -156,6 +156,15 @@ def getSidebar(request):
 
     return HttpResponse(json.dumps(res))
 
+def getPosts(request):
+    movie = request.GET.get('movie', '')
+    movie = urllib.unquote(movie)
+
+    moviePosts = [post.as_json() for post in Post.objects.filter(keyword__word=movie)]
+    print(moviePosts)
+    print(json.dumps(moviePosts))
+    return HttpResponse(json.dumps(moviePosts))
+
 def getDoughnutData(request):
     res = dict()
     posts = Post.objects.all().values('keyword').annotate(total=Count('keyword')).order_by('-total')[:5]

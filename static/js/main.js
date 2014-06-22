@@ -10,6 +10,9 @@ var bindEvents = function () {
     getLineChartData();
     getDoughnutData();
     getSidebar();
+
+    $('#movieSidebar').on('click', '.movie-choice', loadPosts);
+
 };
 
 var getLineChartData = function () {
@@ -21,7 +24,7 @@ var getLineChartData = function () {
             console.log(data);
             var date = new Date();
             var currentHour = date.getHours();
-            labels: [currentHour]
+            labels: [currentHour];
             var chartData = {
                 labels: ['' + currentHour - 6 + ':00', '' + currentHour - 5 + ':00', '' + currentHour - 4 + ':00', ''
                     + currentHour - 3 + ':00', '' + currentHour - 2 + ':00', '' + currentHour - 1 + ':00'
@@ -40,7 +43,7 @@ var getLineChartData = function () {
                         pointColor: "rgba(220,220,220,1)",
                         pointStrokeColor: "#fff",
                         data: [20, 60, 42, 58, 31, 21, 50]
-                    },
+                    }
                 ]
             };
             var options = {
@@ -106,6 +109,30 @@ var getLineChartData = function () {
     });
 };
 
+var getSidebar = function() {
+    $.ajax({
+        url: 'api/get_sidebar',
+        dataType: 'json',
+        type: 'GET',
+        success: function (data) {
+            console.log("getSidebar: " + data);
+            for (var key in data) {
+                if (data.hasOwnProperty(key)) {
+                    var movie = key.toLowerCase().replace(/ /g, "");
+                    console.log(movie);
+                    if (data[key] === 0) {
+                        $('#movieSidebar').append('<li><a class="movie-choice"  id="' + movie + '" data-movie-title="' + key + '" href="#">' + key + '<span class=" text-success glyphicon glyphicon-circle-arrow-up pull-right"></span></a></li>')
+                    } else if (data[key] === 1) {
+                        $('#movieSidebar').append('<li ><a class="movie-choice" id="' + movie + '" data-movie-title="' + key + '" href="#">' + key + '<span class=" text-success glyphicon glyphicon-circle-arrow-up pull-right"></span></a></li>')
+                    } else {
+                        $('#movieSidebar').append('<li><a class="movie-choice" id="' + movie + '" data-movie-title="' + key + '" href="#">' + key + '<span class=" text-danger glyphicon glyphicon-circle-arrow-down pull-right"></span></a></li>')
+                    }
+                }
+            }
+        }
+    });
+}
+
 var getDoughnutData = function () {
     $.ajax({
         url: 'api/get_doughnutdata',
@@ -113,7 +140,7 @@ var getDoughnutData = function () {
         type: 'GET',
         success: function (data) {
 
-            var names = []
+            var names = [];
             for (key in data) {
                 names.push(key);
             }
@@ -139,7 +166,7 @@ var getDoughnutData = function () {
                     value: data[names[4]],
                     color: "#4D5360"
                 }
-            ]
+            ];
             var options = {
                 //Boolean - Whether we should show a stroke on each segment
                 segmentShowStroke: true,
@@ -170,7 +197,7 @@ var getDoughnutData = function () {
 
                 //Function - Will fire on animation completion.
                 onAnimationComplete: populateDoughnutLabels(names, data)
-            }
+            };
             //Get context with jQuery - using jQuery's .get() method.
             var ctx = $("#doughnutChart").get(0).getContext("2d");
             //This will get the first returned node in the jQuery collection.
@@ -184,45 +211,60 @@ var getDoughnutData = function () {
         }
 
     });
-}
-
+};
+    
+    
 var populateDoughnutLabels = function(names, data) {
     $('#doughnutSpace').append('<p class="text-center" style="color: #F7464A; margin: 0 auto;">' + names[0] + ': ' + data[names[0]] + '</p>');
     $('#doughnutSpace').append('<p class="text-center" style="color: #718D8A; margin: 0 auto;">' + names[1] + ': ' + data[names[1]] + '</p>');
     $('#doughnutSpace').append('<p class="text-center" style="color: #9C9893; margin: 0 auto;">' + names[3] + ': ' + data[names[3]] + '</p>');
     $('#doughnutSpace').append('<p class="text-center" style="color: #949FB1; margin: 0 auto;">' + names[2] + ': ' + data[names[2]] + '</p>');
     $('#doughnutSpace').append('<p class="text-center" style="color: #4D5360; margin: 0 auto;">' + names[4] + ': ' + data[names[4]] + '</p>');
-}
+};
 
-    var getSidebar = function () {
-        $.ajax({
-            url: 'api/get_sidebar',
-            dataType: 'json',
-            type: 'GET',
-            success: function (data) {
-                console.log("getSidebar: " + data)
-                for (var key in data) {
-                    if (data.hasOwnProperty(key)) {
-                        var movie = key.toLowerCase().replace(/ /g, "").replace(/./g, "");
-                        console.log(movie)
-                        if (data[key] == 0) {
-                            $('#movieSidebar').append('<li><a id=""+ movie +"" href="#">' + key + '<span class=" text-success glyphicon glyphicon-circle-arrow-up pull-right"></span></a></li>')
-                        } else if (data[key] == 1) {
-                            $('#movieSidebar').append('<li><a id=""+ movie +"" href="#">' + key + '<span class=" text-success glyphicon glyphicon-circle-arrow-up pull-right"></span></a></li>')
-                        } else {
-                            $('#movieSidebar').append('<li><a id=""+ movie +"" href="#">' + key + '<span class=" text-danger glyphicon glyphicon-circle-arrow-down pull-right"></span></a></li>')
-                        }
-                    }
+var loadPosts = function () {
+    // Get the movie name from data object
+    movieName = getMovieName(this);
+    var encoded = encodeURIComponent(movieName);
+    // Send request for posts
+
+    $.get( 'api/get_posts?movie='+ encoded, function( data ) {
+        // Set new title
+        $('#post-header').text(movieName);
+        // Clear table
+        table = $('#post-feed');
+        table.empty();
+        // Repopulate posts
+        table.append('<tr><th>Time</th><th>Tweet</th></tr>');
+        console.log(data);
+        $.each(JSON.parse(data), function(idx, obj) {
+            if (obj.semantic === 0) {
+                if (obj.confidence > 85) {
+                    table.append('<tr class="danger"><td style="width: 20%;">' + obj.time + '</td><td>' + obj.text + '</td></tr></tbody>')
+                } else {
+                    table.append('<tr><td style="width: 20%;">' + obj.time + '</td><td>' + obj.text + '</td></tr></tbody>')
+                }
+
+            } else if (obj.semantic === 1) {
+                if (obj.confidence > 85) {
+                    table.append('<tr class="warning"><td style="width: 20%;">' + obj.time + '</td><td>' + obj.text + '</td></tr></tbody>')
+                } else {
+                    table.append('<tr><td style="width: 20%;">' + obj.time + '</td><td>' + obj.text + '</td></tr></tbody>')
+                }
+            } else {
+                if (obj.confidence > 85) {
+                    table.append('<tr class="success"><td style="width: 20%;">' + obj.time + '</td><td>' + obj.text + '</td></tr></tbody>')
+                } else {
+                    table.append('<tr><td style="width: 20%;">' + obj.time + '</td><td>' + obj.text + '</td></tr></tbody>')
                 }
             }
         });
 
-    };
 
-    var processText = function (text) {
-        var baseUrl = 'http://sentiment.vivekn.com/api/text/';
+    });
+};
 
-
-    };
-
-
+var getMovieName = function(element){
+    var title = $(element).attr('data-movie-title');
+    return title === undefined ? '' : title;
+};
