@@ -32,37 +32,25 @@
           <h1 class="page-header">Dashboard</h1>
 
           <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-4">
                 <div id="tweet-hour">
                     <h2 class="text-center">Tweets By Hour</h2>
                     <canvas id="hourlyChart" width="500" height="300"></canvas>
                 </div>
             </div>
 
-            <div id="doughnutSpace" class="col-sm-6">
+            <div id="doughnutSpace" class="col-sm-4">
                 <h2 class="text-center">Top Movies</h2>
                 <canvas class="center-block" id="doughnutChart" width="400" height="200"></canvas>
             </div>
+
+            <div class="col-sm-4">
+                <h3 class="text-center">Sentiment Analysis</h3>
+                <canvas class="center-block" style="padding-top: 15px; " id="barGraph1" width="400" height="200"></canvas>
+            </div>
           </div>
 
-            <hr>
-
-          <div class="row" style="padding-top: 5px;">
-              <div class="col-sm-4">
-                  <h3 class="text-center">Sentiment Analysis</h3>
-                  <canvas class="center-block" style="padding-top: 15px; " id="barGraph1" width="250" height="150"></canvas>
-              </div>
-              <div class="col-sm-4">
-                  <h3 class="text-center" style="margin-bottom: 0px;">Distribution</h3>
-                  <canvas class="center-block" id="radarGraph" width="275" height="175"></canvas>
-              </div>
-              <div class="col-sm-4">
-                  <h3 class="text-center">Sentiment Analysis</h3>
-                  <canvas class="center-block" style="padding-top: 15px;" id="barGraph3" width="250" height="150"></canvas>
-              </div>
-          </div>
-
-
+          <hr>
 
           <h3 id="post-header" class="sub-header"></h3>
           <div class="table-responsive">
