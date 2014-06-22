@@ -305,14 +305,14 @@ var getBarChartData = function () {
     var data3 = {
         labels: ["Positive", "Negative", "Neutral"],
         datasets: [
-            {
+             {
                 fillColor: "rgba(42,66,86,1)",
-                strokeColor: "rgba(94,123,119,1)",
+                strokeColor: "rgba(94,123,119,.5)",
                 data: [60, 45, 30]
             },
             {
                 fillColor: "rgba(94,123,119,1)",
-                strokeColor: "rgba(42,66,86,1)",
+                strokeColor: "rgba(42,66,86,.5)",
                 data: [86, 90, 78]
             }
         ]
